@@ -1,0 +1,70 @@
+﻿@model IEnumerable<Book>
+@using LoginSolo;
+@using LoginSolo.Models;
+@{
+    ViewData["Title"] = "Home Page";
+}
+<style>
+    .product-name-title {
+        height: 50px;
+        overflow: hidden;
+        padding: 0 10px;
+        margin-bottom: 5px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .container {
+        padding: 2rem;
+        width: 100%;
+        margin-top: -100px;
+    }
+</style>
+
+<body>
+    <section class="movies">
+        @if (Model != null)
+        {
+            foreach (var book in Model)
+            {
+                <div class="movie-card" onclick="window.location.href='/Home/BookDetail?bookId=@book.Id'">
+                    <div class="movie-image">
+                        <img src="@book.ImagePath">
+                    </div>
+                    <div class="product-name-title">
+                        <h6>@book.Title</h6>
+
+                    </div>
+
+                </div>
+            }
+
+
+        }
+
+
+    </section>
+
+
+</body>
+
+
+
+
+
+<script>
+    function Edit(id, like) {
+        $.ajax({
+            type: "POST",
+            data: { id: id, like: like },
+            url: 'Edit',
+        }).done(function (result) {
+            var html = ""
+            for (var i = 0; i < result.length; i++) {
+                html += '<tr><td>' + result[i].id + '</td><td>' + result[i].numberOfLikes + '</td><td>' + result[i].numberOfDislikes + '</td><td><button onclick="Edit(' + result[i].id + ',true)">Like</button><button onclick="Edit(' + result[i].id + ',false)">Dislike</button></td></tr>'
+            }
+            document.getElementById("tbody1").innerHTML = html;
+        });
+    }
+</script>
